@@ -1,0 +1,74 @@
+<div class="container mt-5">
+    <div class="row bg-dark rounded">
+        <div class="col"></div>
+        <div class="col-0 mt-3 mb-3">
+            <img src="{{profile.userImage}}" class="circleHuge">
+        </div>
+        <div class="col mt-3 mb-3">
+            <div class="row">
+                <div class="col">
+                    <h4 class="text-light">{{profile.username}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="text-light">{{profile.name}}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="text-light">{{profile.numOfSubs}} subscribers</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-0">
+                    <i class="fa fa-envelope text-light" aria-hidden="true"></i>
+                </div>
+                <div class="col">
+                    <label class="text-light">{{profile.email}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-3 mb-3" *ngIf="userValue!=null && userValue.id!=profile.id">
+            <button *ngIf="alreadySubscribed==false" (click)="subscribe()" class="btn btn-primary">SUBSCRIBE</button>
+            <button *ngIf="alreadySubscribed==true" (click)="unsubscribe()" class="btn btn-outline-primary">UNSUBSCRIBE</button>
+        </div>
+        <div class="col mt-3 mb-3" *ngIf="userValue!=null && userValue.id==profile.id">
+            <button routerLink="/editprofile" class="btn btn-primary">EDIT PROFILE</button>
+            <button routerLink="/changepassword" class="btn btn-primary mt-3">CHANGE PASSWORD</button>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <h5>Videos</h5>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col mb-5" *ngFor="let video of profile.videos">
+            <div class="card" routerLink="/video/{{video.id}}" style="width: 20rem; height: 25rem;">
+                <img class="card-img-top" src="assets/img/videoImage.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{video.title}}</h5>
+                    <p class="card-text">{{video.description}}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col">
+                            <i class="fa fa-eye" aria-hidden="true"></i> {{video.views}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{video.likes}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> {{video.dislikes}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-comment" aria-hidden="true"></i> {{video.numOfComments}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

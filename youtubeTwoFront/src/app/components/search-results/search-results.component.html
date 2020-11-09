@@ -1,0 +1,72 @@
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="videos-tab" data-toggle="tab" href="#videos" role="tab" aria-controls="videos" aria-selected="true">Videos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="channels-tab" data-toggle="tab" href="#channels" role="tab" aria-controls="channels" aria-selected="false">Channels</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="videos" role="tabpanel" aria-labelledby="videos-tab">
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col mb-5" *ngFor="let video of videos">
+                        <div class="card" routerLink="/video/{{video.id}}" style="width: 20rem; height: 25rem;">
+                            <img class="card-img-top" src="assets/img/videoImage.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title">{{video.title}}</h5>
+                                <p class="card-text">{{video.description}}</p>
+                            </div>
+                            <div class="card-footer text-muted">
+                                <div class="row">
+                                    <div class="col">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> {{video.views}}
+                                    </div>
+                                    <div class="col">
+                                        <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{video.likes}}
+                                    </div>
+                                    <div class="col">
+                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i> {{video.dislikes}}
+                                    </div>
+                                    <div class="col">
+                                        <i class="fa fa-comment" aria-hidden="true"></i> {{video.numOfComments}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="channels" role="tabpanel" aria-labelledby="channels-tab">
+            <div class="container mt-5">
+                <div class="row" *ngFor="let channel of channels">
+                    <div class="col-3"></div>
+                    <div class="col-6 border-top">
+                        <div class="row mt-3 mb-3">
+                            <div class="col-2">
+                                <img src="{{channel.userImage}}" class="circleLarge" routerLink="/profile/{{channel.id}}">
+                            </div>
+                            <div class="col-7">                            
+                                <div class="row">
+                                    <label routerLink="/profile/{{channel.id}}"><b>{{channel.username}}</b></label>
+                                  </div>
+                                  <div class="row">
+                                    <label class="text-muted">{{channel.numOfSubs}} subscribers</label>
+                                  </div>
+                            </div>
+                            <div class="col-2 mt-3">
+                                <ng-container *ngIf="userValue!=null && userValue.id!=channel.id">
+                                    <button *ngIf="channel.alreadySubscribed==false" (click)="subscribe(channel)" class="btn btn-primary">SUBSCRIBE</button>
+                                    <button *ngIf="channel.alreadySubscribed==true" (click)="unsubscribe(channel)" class="btn btn-outline-primary">UNSUBSCRIBE</button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

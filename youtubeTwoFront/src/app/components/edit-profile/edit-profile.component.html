@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <h2>Edit profile</h2>
+            <form>
+                <div class="form-group">
+                    <label for="nameInput">Name</label>
+                    <input name="name" [(ngModel)]="user.name" type="text" class="form-control" id="nameInput" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <input input name="username" [(ngModel)]="user.username" type="text" class="form-control" id="usernameInput" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input input name="email" [(ngModel)]="user.email" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email address">
+                </div>
+                <button name="submit" type="submit" (click)="submit()" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

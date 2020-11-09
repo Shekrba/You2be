@@ -1,0 +1,109 @@
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col">
+            <vg-player>
+                <vg-overlay-play></vg-overlay-play>
+                <vg-buffering></vg-buffering>
+            
+                <vg-scrub-bar>
+                  <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+                  <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+                </vg-scrub-bar>
+            
+                <vg-controls>
+                  <vg-play-pause></vg-play-pause>
+                  <vg-playback-button></vg-playback-button>
+            
+                  <vg-scrub-bar style="pointer-events: none;"></vg-scrub-bar>
+            
+                  <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
+                  <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+            
+                  <vg-mute></vg-mute>
+                  <vg-volume></vg-volume>
+            
+                  <vg-fullscreen></vg-fullscreen>
+                </vg-controls>
+            
+                <video [src]="video.src" [vgMedia]="media" #media id="singleVideo" preload="auto" crossorigin>
+                  
+                </video>
+              </vg-player>
+        </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <h4>{{video.title}}</h4>
+      </div>
+    </div>
+    <div class="row border-bottom">
+      <div class="col-10">
+        <label class="text-muted">{{video.views}} views • {{video.uploadDate}}</label>
+      </div>
+      <div class="col">
+        <i *ngIf="likesVideo==false" (click)="makeLiking('LIKE')" class="fa fa-thumbs-up" aria-hidden="true"></i>
+        <i *ngIf="likesVideo==true" (click)="deleteLiking('LIKE')" class="fa fa-thumbs-up text-success" aria-hidden="true"></i>
+        {{video.likes}}
+      </div>
+      <div class="col">
+        <i *ngIf="dislikesVideo==false" (click)="makeLiking('DISLIKE')" class="fa fa-thumbs-down" aria-hidden="true"></i>
+        <i *ngIf="dislikesVideo==true" (click)="deleteLiking('DISLIKE')" class="fa fa-thumbs-down text-danger" aria-hidden="true"></i>
+        {{video.dislikes}}
+      </div>
+    </div>
+    <div class="row mt-3 border-bottom">
+      <div class="col-10">
+        <div class="row">
+          <div class="col-1 mr-3">
+            <img src="{{video.userImage}}" class="circleLarge" routerLink="/profile/{{video.uploaderId}}" >
+          </div>
+          <div class="col">
+            <div class="row">
+              <label routerLink="/profile/{{video.uploaderId}}"><b>{{video.uploaderUsername}}</b></label>
+            </div>
+            <div class="row">
+              <label class="text-muted">{{video.numOfSubscribers}} subscribers</label>
+            </div>
+          </div>  
+        </div>
+        <div class="row">
+          <div class="col">
+            <p>{{video.description}}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="userValue!=null && userValue.id!=video.uploaderId" class="col">
+        <button *ngIf="alreadySubscribed==false" (click)="subscribe()" class="btn btn-primary">SUBSCRIBE</button>
+        <button *ngIf="alreadySubscribed==true" (click)="unsubscribe()" class="btn btn-outline-primary">UNSUBSCRIBE</button>
+      </div>
+      <div *ngIf="userValue!=null && userValue.id==video.uploaderId" class="col">
+        <button (click)="deleteVideo()" class="btn btn-danger">DELETE VIDEO</button>
+        <button routerLink="/editvideo/{{video.id}}" class="btn btn-primary mt-3">EDIT VIDEO</button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <h5>Comments</h5>
+          </div>
+        </div>
+        <div class="row mt-3" *ngIf="userValue!=null">
+          <div class="col-0 ml-3 text-center">
+            <label><img src="{{userValue.imageSrc}}" class="circleMedium"></label>
+          </div>
+          <div class="col-10">
+            <textarea type="text" [(ngModel)]="newCommentText" class="form-control" id="commentInput" placeholder="Add a public comment..."></textarea>
+          </div>
+          <div class="col-1">
+            <button (click)="addComment()" class="btn btn-primary">Comment</button>
+          </div>
+        </div>
+        <div class="row mt-5" *ngFor="let c of comments">
+          <div class="col">
+            <app-comment [comment]=c [userValue]="userValue" (incrementCommentNumber)="incrementCommentNumber()" (decrementCommentNumber)="decrementCommentNumber($event)" (deleteCommentEmmiter)="handleDeleteCommentEvent($event)"></app-comment>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

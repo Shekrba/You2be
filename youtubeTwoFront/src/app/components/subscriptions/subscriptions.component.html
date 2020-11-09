@@ -1,0 +1,69 @@
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="mySubscriptions-tab" data-toggle="tab" href="#mySubscriptions" role="tab" aria-controls="mySubscriptions" aria-selected="true">My subscriptions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="channelSubs-tab" data-toggle="tab" href="#channelSubs" role="tab" aria-controls="channelSubs" aria-selected="false">Channel subscribers</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="mySubscriptions" role="tabpanel" aria-labelledby="mySubscriptions-tab">
+            <div class="container mt-5">
+                <div class="row" *ngFor="let channel of mySubscriptions">
+                    <div class="col-3"></div>
+                    <div class="col-6 border-top">
+                        <div class="row mt-3 mb-3">
+                            <div class="col-2">
+                                <img src="{{channel.userImage}}" class="circleLarge" routerLink="/profile/{{channel.id}}">
+                            </div>
+                            <div class="col-7">                            
+                                <div class="row">
+                                    <label routerLink="/profile/{{channel.id}}"><b>{{channel.username}}</b></label>
+                                  </div>
+                                  <div class="row">
+                                    <label class="text-muted">{{channel.numOfSubs}} subscribers</label>
+                                  </div>
+                            </div>
+                            <div class="col-2 mt-3">
+                                
+                                <button *ngIf="channel.alreadySubscribed==true" (click)="unsubscribe(channel)" class="btn btn-outline-primary">UNSUBSCRIBE</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="channelSubs" role="tabpanel" aria-labelledby="channelSubs-tab">
+            <div class="container mt-5">
+                <div class="row" *ngFor="let channel of channelSubs">
+                    <div class="col-3"></div>
+                    <div class="col-6 border-top">
+                        <div class="row mt-3 mb-3">
+                            <div class="col-2">
+                                <img src="{{channel.userImage}}" class="circleLarge" routerLink="/profile/{{channel.id}}">
+                            </div>
+                            <div class="col-7">                            
+                                <div class="row">
+                                    <label routerLink="/profile/{{channel.id}}"><b>{{channel.username}}</b></label>
+                                  </div>
+                                  <div class="row">
+                                    <label class="text-muted">{{channel.numOfSubs}} subscribers</label>
+                                  </div>
+                            </div>
+                            <div class="col-2 mt-3">
+                                <ng-container *ngIf="userValue!=null && userValue.id!=channel.id">
+                                    <button *ngIf="channel.alreadySubscribed==false" (click)="subscribe(channel)" class="btn btn-primary">SUBSCRIBE</button>
+                                    <button *ngIf="channel.alreadySubscribed==true" (click)="unsubscribe(channel)" class="btn btn-outline-primary">UNSUBSCRIBE</button>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

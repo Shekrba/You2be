@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <h2>Edit video</h2>
+            <form>
+                <div class="form-group">
+                    <label for="titleInput">Title</label>
+                    <input input name="title" [(ngModel)]="video.title" type="text" class="form-control" id="titleInput">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionInput">Description</label>
+                    <input input name="description" [(ngModel)]="video.description" type="text" class="form-control" id="descriptionInput">
+                </div>
+                <button name="submit" type="submit" (click)="submit()" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col mb-5" *ngFor="let video of allVideos">
+            <div class="card" routerLink="/video/{{video.id}}" style="width: 20rem; height: 25rem;">
+                <img class="card-img-top" src="assets/img/videoImage.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{video.title}}</h5>
+                    <p class="card-text">{{video.description}}</p>
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col">
+                            <i class="fa fa-eye" aria-hidden="true"></i> {{video.views}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{video.likes}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-thumbs-down" aria-hidden="true"></i> {{video.dislikes}}
+                        </div>
+                        <div class="col">
+                            <i class="fa fa-comment" aria-hidden="true"></i> {{video.numOfComments}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

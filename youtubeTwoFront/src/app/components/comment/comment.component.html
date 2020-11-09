@@ -1,0 +1,55 @@
+<div id="accordion{{comment.id}}">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+
+        <div class="row ml-2">
+            <div class="col-0 mt-2">
+              <img src="{{comment.userImage}}" class="circleMedium">
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col-8">
+                    <label routerLink="/profile/{{comment.userId}}"><b>{{comment.username}}</b></label>
+                </div>
+                <div class="col-4">
+                    <label class="text-muted small-text">{{comment.createdAt}}</label>
+                    <button *ngIf="userValue!=null && (userValue.id==comment.userId || userValue.id==comment.videoUploaderId)" (click)="deleteComment()" class="btn btn-outline-dark ml-5"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                    <p>{{comment.text}}</p>
+                </div>
+              </div>
+            </div>  
+        </div>
+
+        <h6 class="mb-0">
+          <a class="btn btn-link" data-toggle="collapse" (click)="getChildren()" href="#collapseOne{{comment.id}}" aria-expanded="false" [attr.aria-controls]="'collapseOne'+comment.id">
+            View All Replies
+          </a>
+        </h6>
+      </div>
+  
+      <div id="collapseOne{{comment.id}}" class="collapse" [attr.aria-labelledby]="'headingOne'+comment.id">
+        <div class="card-body">
+            <div class="row mt-3" *ngFor="let reply of replies">
+                <div class="col">
+                    <app-comment [comment]="reply" [userValue]="userValue" (incrementCommentNumber)="emitCommentIncrementEvent()" (decrementCommentNumber)="emitCommentDecrementEvent($event)" (deleteCommentEmmiter)="handleDeleteCommentEvent($event)"></app-comment>
+                </div>
+            </div>
+            <div class="row mt-3" *ngIf="userValue!=null">
+                <div class="col-0 ml-3 text-center">
+                  <label><img src="{{userValue.imageSrc}}" class="circleMedium"></label>
+                </div>
+                <div class="col-10">
+                  <textarea type="text" class="form-control" [(ngModel)]="newCommentText" id="commentInput" placeholder="Add a public comment..."></textarea>
+                </div>
+                <div class="col-1">
+                  <button (click)="addComment()" class="btn btn-primary">Reply</button>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+</div>

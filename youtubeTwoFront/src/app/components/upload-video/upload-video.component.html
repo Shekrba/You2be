@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row mt-5">
+        <div class="col">
+            <h2>Upload video</h2>
+            <form>
+                <div class="form-group">
+                    <label for="titleInput">Title</label>
+                    <input input name="title" [(ngModel)]="video.title" type="text" class="form-control" id="titleInput">
+                </div>
+                <div class="form-group">
+                    <label for="descriptionInput">Description</label>
+                    <input input name="description" [(ngModel)]="video.description" type="text" class="form-control" id="descriptionInput">
+                </div>
+                <div class="form-group">
+                    <label for="fileInput">File</label>
+                    <input input name="file" (change)="onFileSelected($event)" type="file" class="form-control-file" id="fileInput">
+                </div>
+                <button name="submit" [disabled]="buttonDisabled" type="submit" (click)="submitUpload()" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+</div>
