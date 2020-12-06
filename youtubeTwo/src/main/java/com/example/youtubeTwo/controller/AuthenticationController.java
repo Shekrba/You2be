@@ -47,6 +47,7 @@ public class AuthenticationController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@RequestBody RegUserDTO regUserDTO){
+
 		RegCompletedDTO regCompletedDTO = loginService.register(regUserDTO);
 		if(regCompletedDTO.getMessage().equals("Registration failed")){
 			return new ResponseEntity<>(regCompletedDTO, HttpStatus.CONFLICT);

@@ -29,6 +29,8 @@ public class Video {
 
     private String src;
 
+    private String thumbnailSrc;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 

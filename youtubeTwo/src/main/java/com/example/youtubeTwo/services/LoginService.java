@@ -66,7 +66,7 @@ public class LoginService {
             user.setPassword(passwordEncoder.encode(regUserDTO.getPassword()));
 
             if(regUserDTO.getImageSrc()==null || regUserDTO.getImageSrc().trim().equals("")){
-                user.setImageSrc("assets/img/user.png");
+                user.setImageSrc("http://localhost:8080/user/image/download/user.png");
             }else{
                 user.setImageSrc("http://localhost:8080/user/image/download/"+regUserDTO.getImageSrc());
             }

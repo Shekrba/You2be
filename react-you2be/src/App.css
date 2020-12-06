@@ -1,0 +1,104 @@
+.react-logo {
+  display: inline-block;
+  border-radius: 50%;
+  border: 10px solid #282c34;
+
+  animation-name: rotate;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.react-logo,
+.react-logo:before,
+.react-logo:after {
+  position: absolute;
+  display: inline-block;
+  width: 30px;
+  height: 17px;
+  border-radius: 50%;
+  border: 2px solid #282c34;
+}
+
+.nucleo,
+.react-logo,
+.react-logo:before,
+.react-logo:after {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nucleo {
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  background: #282c34;
+}
+
+.react-logo:before,
+.react-logo:after {
+  content: "";
+}
+
+.react-logo:after {
+  transform: rotate(-57deg);
+}
+
+.react-logo:before {
+  transform: rotate(57deg);
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.react-cyan-bg {
+  background-color: #61dafb !important;
+}
+
+.react-dark-bg {
+  background-color: #282c34 !important;
+}
+
+.react-cyan {
+  color: #61dafb !important;
+}
+
+.react-dark {
+  color: #282c34 !important;
+}
+
+.hide-overflow {
+  overflow: hidden !important;
+}
+
+.circleSmall {
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+}
+
+.circleMedium {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+}
+
+.circleLarge {
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+}
+
+.circleHuge {
+  border-radius: 50%;
+  width: 8em;
+  height: 8rem;
+}
+
+.active {
+  color: #282c34 !important;
+}

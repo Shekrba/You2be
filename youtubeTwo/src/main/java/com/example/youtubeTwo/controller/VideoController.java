@@ -2,6 +2,7 @@ package com.example.youtubeTwo.controller;
 
 import com.example.youtubeTwo.dto.*;
 import com.example.youtubeTwo.services.VideoService;
+import org.bytedeco.javacv.FrameGrabber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import sun.nio.ch.IOUtil;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ public class VideoController {
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) throws FrameGrabber.Exception {
         SrcDTO srcDTO = videoService.upload(file);
 
         if(srcDTO == null){
@@ -59,6 +61,12 @@ public class VideoController {
 
     }
 
+    @RequestMapping(value = "/thumbnail/{src}", method = RequestMethod.GET)
+    public @ResponseBody byte[] getThumbnail(@PathVariable String src) throws IOException {
+
+        return videoService.getThumbnail(src);
+    }
+
     @RequestMapping(value = "download/{videoId}", method = RequestMethod.GET)
     public ResponseEntity<?> getVideo(@PathVariable Long videoId){
         VideoDTO videoDTO = videoService.getVideo(videoId);
@@ -91,7 +99,7 @@ public class VideoController {
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{videoId}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteVideo(@PathVariable Long videoId) {
+    public ResponseEntity<?> deleteVideo(@PathVariable Long videoId) throws IOException {
         VideoDTO videoDTO = videoService.deleteVideo(videoId);
 
         if(videoDTO == null){

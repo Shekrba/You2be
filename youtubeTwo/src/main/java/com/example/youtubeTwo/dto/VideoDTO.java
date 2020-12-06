@@ -39,4 +39,6 @@ public class VideoDTO {
 
     private String userImage;
 
+    private String thumbnailSrc;
+
 }

@@ -40,7 +40,7 @@ public class UserService {
 
         //UPLOAD IMAGE TO FILE SYSTEM
         String fileName = file.getOriginalFilename();
-        File dir = new File("C:/Users/praksa.1.ITENGINE/Documents/Milan Skrbic/youtubeTwo/src/main/resources/userImages");
+        File dir = new File("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/userImages");
         if (dir.isDirectory()) {
             try {
                 File serverFile = new File(dir, fileName);
@@ -60,7 +60,7 @@ public class UserService {
 
     public byte[] download(String src) throws IOException {
 
-        InputStream in = new FileInputStream("C:/Users/praksa.1.ITENGINE/Documents/Milan Skrbic/youtubeTwo/src/main/resources/userImages/"+src);
+        InputStream in = new FileInputStream("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/userImages/"+src);
 
         return IOUtils.toByteArray(in);
     }

@@ -7,14 +7,23 @@ import com.example.youtubeTwo.dto.VideoDTO;
 import com.example.youtubeTwo.model.*;
 import com.example.youtubeTwo.repository.UserRepository;
 import com.example.youtubeTwo.repository.VideoRepository;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.bytedeco.javacpp.opencv_core.IplImage;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FrameGrabber.Exception;
+
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,11 +39,11 @@ public class VideoService {
     @Autowired
     UserRepository userRepository;
 
-    public SrcDTO upload(MultipartFile file) {
+    public SrcDTO upload(MultipartFile file) throws Exception {
 
         //UPLOAD VIDEO TO FILE SYSTEM
         String fileName = file.getOriginalFilename();
-        File dir = new File("C:/Users/praksa.1.ITENGINE/Documents/Milan Skrbic/youtubeTwo/src/main/resources/videos");
+        File dir = new File("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/videos");
         if (dir.isDirectory()) {
             try {
                 File serverFile = new File(dir, fileName);
@@ -49,7 +58,33 @@ public class VideoService {
         SrcDTO ret = new SrcDTO();
         ret.setSrc(fileName);
 
+        String thumbnailName = fileName.split("\\.")[0] +".png";
+
+        //THUMBNAIL
+        Java2DFrameConverter bimConverter = new Java2DFrameConverter();
+        FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/videos/"+fileName);
+        frameGrabber.start();
+        Frame frame;
+
+        try {
+            frame = frameGrabber.grab();
+            BufferedImage bi = bimConverter.convert(frame);
+            ImageIO.write(bi,"png", new File("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/thumbnails/"+thumbnailName));
+            frameGrabber.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return ret;
+    }
+
+    public byte[] getThumbnail(String src) throws IOException {
+
+        InputStream in = new FileInputStream("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/thumbnails/"+src);
+
+        return IOUtils.toByteArray(in);
     }
 
     public VideoDTO add(UploadVideoDTO uploadVideoDTO){
@@ -62,6 +97,7 @@ public class VideoService {
         video.setUploadDate(new Date());
         video.setViews(0);
         video.setSrc(uploadVideoDTO.getSrc());
+        video.setThumbnailSrc(uploadVideoDTO.getSrc().split("\\.")[0]+".png");
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findOneByUsername(username);
@@ -83,6 +119,7 @@ public class VideoService {
         ret.setTitle(video.getTitle());
         ret.setUploadDate(video.getUploadDate());
         ret.setViews(video.getViews());
+        ret.setThumbnailSrc(video.getThumbnailSrc());
 
         return ret;
     }
@@ -140,7 +177,7 @@ public class VideoService {
 
     public byte[] downloadVideo(String src) throws IOException {
 
-        InputStream in = new FileInputStream("C:/Users/praksa.1.ITENGINE/Documents/Milan Skrbic/youtubeTwo/src/main/resources/videos/"+src);
+        InputStream in = new FileInputStream("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/videos/"+src);
 
         return IOUtils.toByteArray(in);
     }
@@ -177,6 +214,7 @@ public class VideoService {
         setLikesDislikes(videoDTO,video);
         videoDTO.setDescription(video.getDescription());
         videoDTO.setSrc("http://localhost:8080/video/download/src/"+video.getSrc());
+        videoDTO.setThumbnailSrc("http://localhost:8080/video/thumbnail/"+video.getThumbnailSrc());
         videoDTO.setUploadDate(video.getUploadDate());
         videoDTO.setViews(video.getViews());
         videoDTO.setTitle(video.getTitle());
@@ -188,7 +226,7 @@ public class VideoService {
         return videoDTO;
     }
 
-    public VideoDTO deleteVideo(Long videoId) {
+    public VideoDTO deleteVideo(Long videoId) throws IOException {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findOneByUsername(username);
@@ -196,17 +234,21 @@ public class VideoService {
         Video video = videoRepository.getOne(videoId);
 
         if(video==null || user==null){
+            System.out.println("VIDEO OR USER IS NULL");
             return null;
         }
 
         if(video.getUser().getId() != user.getId()){
+            System.out.println("VIDEO UPLOADER IS NOT LOGGED IN USER");
             return null;
         }
 
         VideoDTO videoDTO = videoToDTO(video);
 
-        File file = new File("C:/Users/praksa.1.ITENGINE/Documents/Milan Skrbic/youtubeTwo/src/main/resources/videos/"+video.getSrc());
-        if (file.delete()) {
+        File file = new File("C:/Users/Shekrba/Documents/Projects/You2be/youtubeTwo/src/main/resources/videos/"+video.getSrc());
+
+        if (file.exists()) {
+            file.delete();
             videoRepository.delete(video);
             return videoDTO;
         } else {
